@@ -1,0 +1,37 @@
+.posts {
+    a {
+      display: block;
+
+      strong {
+        display: block;
+        font-size: 1.75rem;
+        line-height: 2.125rem;
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        font-size: 1.125rem;
+        line-height: 1.361rem;
+        color: var(--font-gray-100);
+        margin-bottom: 1.5rem;
+      }
+
+      & + a {
+        margin-top: 3rem;
+      }
+    }
+}
+
+.footerPage {
+  max-width: 720px;
+  margin: 4rem auto 5rem;
+  padding: 0 2rem;
+
+  button {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--font-pink-500);
+    background: transparent;
+    border: none;
+  }
+}

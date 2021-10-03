@@ -1,0 +1,55 @@
+.loading {
+  display: flex;
+  justify-content: center;
+  color: var(--font-white);
+  font-size: 2rem;
+}
+
+.banner {
+  display: block;
+
+  img {
+    width: 100%;
+    max-height: 25rem;
+    object-fit: cover;
+    margin-bottom: 5rem;
+  }
+}
+
+.post {
+
+  .title {
+    display: block;
+    font-size: 3rem;
+    line-height: 3.63rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.postContent {
+
+  margin-top: 4rem;
+  line-height: 2rem;
+  font-size: 1.125rem;
+  color: var(--font-gray-200);
+
+  p, ul {
+    margin: 1.5rem 0;
+  }
+
+  ul {
+    padding-left: 1.5rem;
+
+    li {
+      margin: 0.5rem 0;
+    }
+  }
+
+  .heading {
+    font-size: 2.5rem;
+    line-height: 3rem;
+    font-weight: 600;
+    color: var(--font-white);
+  }
+}
+

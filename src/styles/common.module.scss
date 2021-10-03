@@ -1,0 +1,30 @@
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.postInformations {
+  display: flex;
+  color: var(--font-gray-200);
+
+  .informations {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+
+    svg {
+      margin-right: 0.5rem;
+    }
+
+    time {
+      font-weight: 400;
+      font-size: 0.875rem;
+    }
+
+    aside {
+      font-weight: 400;
+      font-size: 0.875rem;
+    }
+  }
+}
