@@ -53,3 +53,27 @@
   }
 }
 
+.footerPage {
+  margin-top: 3.75rem;
+  margin-bottom: 13.63rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--font-gray-800);
+
+  .postNavigationButtons {
+    display: flex;
+    justify-content: space-between;
+
+    a {
+      color: var(--font-white);
+
+      p {
+        margin-top: 0.5rem;
+        color: var(--font-pink-500);
+      }
+
+      margin-bottom: 5rem;
+    }
+  }
+
+  margin-bottom: 5rem;
+}

@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { FiCalendar, FiClock, FiUser } from 'react-icons/fi';
 import { RichText } from 'prismic-dom';
 import Prismic from '@prismicio/client';
@@ -9,6 +10,7 @@ import { getPrismicClient } from '../../services/prismic';
 import Header from '../../components/Header';
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
+import Comments from '../../components/Comments';
 
 interface Post {
   first_publication_date: string | null;
@@ -31,9 +33,10 @@ interface Post {
 
 interface PostProps {
   post: Post;
+  previewRef: string;
 }
 
-export default function Post({ post }: PostProps): JSX.Element {
+export default function Post({ post, previewRef }: PostProps): JSX.Element {
   const router = useRouter();
 
   if (router.isFallback) {
@@ -90,7 +93,25 @@ export default function Post({ post }: PostProps): JSX.Element {
             );
           })}
         </article>
+        <footer className={styles.footerPage}>
+          <div className={styles.postNavigationButtons}>
+            <a href="/">
+              Como utilizar Hooks <p>Post anterior</p>
+            </a>
+            <a href="/">
+              Criando um app CRA do Zero <p>Próximo post</p>
+            </a>
+          </div>
+          <Comments />
+        </footer>
       </main>
+      {previewRef && (
+        <aside className={commonStyles.preview}>
+          <Link href="/api/exit-preview">
+            <a>Sair do modo Preview</a>
+          </Link>
+        </aside>
+      )}
     </>
   );
 }
@@ -116,11 +137,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async context => {
-  const { slug } = context.params;
+export const getStaticProps: GetStaticProps = async ({
+  params,
+  previewData,
+}) => {
+  const { slug } = params;
+  const previewRef = previewData ? previewData.ref : null;
+  const refOption = previewRef ? { ref: previewRef } : null;
   const prismic = getPrismicClient();
 
-  const response = await prismic.getByUID('posts', String(slug), {});
+  const response = await prismic.getByUID('posts', String(slug), refOption);
+
+  console.log(response);
 
   const post = {
     first_publication_date: response.first_publication_date,
@@ -139,6 +167,7 @@ export const getStaticProps: GetStaticProps = async context => {
   return {
     props: {
       post,
+      previewRef,
     },
     revalidate: 60 * 30, // 30 min
   };

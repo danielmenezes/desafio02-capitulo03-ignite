@@ -9,8 +9,14 @@
   --font-white: #F8F8F8;
   --font-gray-100: #D7D7D7;;
   --font-gray-200: #BBBBBB;
+  --font-gray-800: #313131;
   --font-pink-500: #FF57B2;
   --background-gray-900: #1A1D23;
+  --color-scroll-800: #313131;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 @media (max-width: 1080px) {
@@ -43,6 +49,15 @@ a {
   text-decoration: none;
 }
 
-// ::-webkit-scrollbar {
-//   display: none;
-// }
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--background-gray-900);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--color-scroll-800);
+  border-radius: 20px;
+}
