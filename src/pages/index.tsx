@@ -123,6 +123,7 @@ export const getStaticProps: GetStaticProps<HomeProps> = async ({
     [Prismic.Predicates.at('document.type', 'posts')],
     {
       pageSize: 2,
+      orderings: '[document.first_publication_date]',
       ref: previewData?.ref ?? null,
     }
   );

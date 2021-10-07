@@ -6,11 +6,13 @@ import { RichText } from 'prismic-dom';
 import Prismic from '@prismicio/client';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+
 import { getPrismicClient } from '../../services/prismic';
 import Header from '../../components/Header';
-import commonStyles from '../../styles/common.module.scss';
-import styles from './post.module.scss';
 import Comments from '../../components/Comments';
+
+import styles from './post.module.scss';
+import commonStyles from '../../styles/common.module.scss';
 
 interface Post {
   first_publication_date: string | null;
@@ -31,12 +33,24 @@ interface Post {
   };
 }
 
+interface NeighborPost {
+  uid: string;
+  title: string;
+}
+
 interface PostProps {
   post: Post;
+  beforePost: NeighborPost | null;
+  nextPost: NeighborPost | null;
   previewRef: string;
 }
 
-export default function Post({ post, previewRef }: PostProps): JSX.Element {
+export default function Post({
+  post,
+  beforePost,
+  nextPost,
+  previewRef,
+}: PostProps): JSX.Element {
   const router = useRouter();
 
   if (router.isFallback) {
@@ -93,17 +107,31 @@ export default function Post({ post, previewRef }: PostProps): JSX.Element {
             );
           })}
         </article>
-        <footer className={styles.footerPage}>
-          <div className={styles.postNavigationButtons}>
-            <a href="/">
-              Como utilizar Hooks <p>Post anterior</p>
-            </a>
-            <a href="/">
-              Criando um app CRA do Zero <p>Próximo post</p>
-            </a>
+
+        <div className={styles.postNavigationButtons}>
+          <div className={styles.beforePost}>
+            {beforePost && (
+              <Link href={beforePost.uid}>
+                <a>
+                  <strong>{beforePost.title}</strong>
+                  <div>Post anterior</div>
+                </a>
+              </Link>
+            )}
           </div>
-          <Comments />
-        </footer>
+
+          <div className={styles.nextPost}>
+            {nextPost && (
+              <Link href={nextPost.uid}>
+                <a>
+                  <strong>{nextPost.title}</strong>
+                  <div>Próximo post</div>
+                </a>
+              </Link>
+            )}
+          </div>
+        </div>
+        <Comments />
       </main>
       {previewRef && (
         <aside className={commonStyles.preview}>
@@ -148,7 +176,21 @@ export const getStaticProps: GetStaticProps = async ({
 
   const response = await prismic.getByUID('posts', String(slug), refOption);
 
-  console.log(response);
+  const before = (
+    await prismic.query(Prismic.Predicates.at('document.type', 'posts'), {
+      pageSize: 1,
+      after: `${response.id}`,
+      orderings: '[document.first_publication_date desc]',
+    })
+  ).results[0];
+
+  const next = (
+    await prismic.query(Prismic.Predicates.at('document.type', 'posts'), {
+      pageSize: 1,
+      after: `${response.id}`,
+      orderings: '[document.first_publication_date]',
+    })
+  ).results[0];
 
   const post = {
     first_publication_date: response.first_publication_date,
@@ -164,9 +206,25 @@ export const getStaticProps: GetStaticProps = async ({
     },
   };
 
+  const beforePost = before
+    ? {
+      uid: before.uid,
+      title: before.data.title,
+    }
+    : null;
+
+  const nextPost = next
+    ? {
+      uid: next.uid,
+      title: next.data.title,
+    }
+    : null;
+
   return {
     props: {
       post,
+      beforePost,
+      nextPost,
       previewRef,
     },
     revalidate: 60 * 30, // 30 min
