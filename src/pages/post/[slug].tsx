@@ -16,6 +16,7 @@ import commonStyles from '../../styles/common.module.scss';
 
 interface Post {
   first_publication_date: string | null;
+  last_publication_date: string | null;
   uid: string;
   data: {
     title: string;
@@ -68,7 +69,9 @@ export default function Post({
 
   return (
     <>
-      <Header />
+      <div className={styles.containerHeader}>
+        <Header />
+      </div>
       <div className={styles.banner}>
         <img src={post.data.banner.url} alt="banner" />
       </div>
@@ -92,6 +95,14 @@ export default function Post({
               <FiClock />
               <aside>{postReadingTime} min</aside>
             </div>
+          </div>
+          <div className={styles.editingInformations}>
+
+            <time>
+              {format(new Date(post.last_publication_date), "'*editado em' dd MMM yyyy', às' HH:mm", {
+                locale: ptBR,
+              })}
+            </time>
           </div>
           {post.data.content.map(section => {
             return (
@@ -194,6 +205,7 @@ export const getStaticProps: GetStaticProps = async ({
 
   const post = {
     first_publication_date: response.first_publication_date,
+    last_publication_date: response.last_publication_date,
     uid: response.uid,
     data: {
       title: response.data.title,

@@ -1,3 +1,8 @@
+.containerHeader {
+  height: 6.56rem;
+}
+
+
 .loading {
   display: flex;
   justify-content: center;
@@ -23,6 +28,16 @@
     font-size: 3rem;
     line-height: 3.63rem;
     margin-bottom: 1.5rem;
+  }
+
+  .editingInformations {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: var(--font-gray-200);
+    display: flex;
+
+
+
   }
 }
 

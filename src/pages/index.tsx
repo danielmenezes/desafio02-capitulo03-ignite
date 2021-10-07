@@ -63,7 +63,9 @@ export default function Home({
 
   return (
     <>
-      <Header />
+      <div className={styles.containerHeader}>
+        <Header />
+      </div>
       <main className={commonStyles.container}>
         <article className={styles.posts}>
           {posts.map(post => {
